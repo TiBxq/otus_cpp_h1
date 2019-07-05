@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(helloworld VERSION 0.0.2)
+project(helloworld VERSION 0.0.3)
 
 configure_file(version.h.in version.h)
 
@@ -21,3 +21,13 @@ target_link_libraries(helloworld_cli
     PRIVATE
     version_lib
 )
+
+install(TARGETS version_lib EXPORT versionLibTargets
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    INCLUDES DESTINATION include
+)
+
+install(FILES lib.h DESTINATION include)
+
+install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
