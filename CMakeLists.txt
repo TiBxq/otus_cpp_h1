@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
 project(helloworld VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
+#project(helloworld VERSION 0.0.1)
 
 configure_file(version.h.in version.h)
 
@@ -21,6 +22,28 @@ target_link_libraries(helloworld_cli
     PRIVATE
     version_lib
 )
+
+if (MSVC)
+    target_compile_options(helloworld_cli PRIVATE
+        /W4
+    )
+    target_compile_options(version_lib PRIVATE
+        /W4
+    )
+#    target_compile_options(test_version PRIVATE
+#        /W4
+#    )
+else ()
+    target_compile_options(helloworld_cli PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(version_lib PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+#    target_compile_options(test_version PRIVATE
+#        -Wall -Wextra -pedantic -Werror
+#    )
+endif()
 
 install(TARGETS version_lib EXPORT versionLibTargets
     LIBRARY DESTINATION lib
